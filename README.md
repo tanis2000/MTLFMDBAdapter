@@ -5,6 +5,9 @@
 [![License](https://img.shields.io/cocoapods/l/MTLFMDBAdapter.svg?style=flat)](http://cocoadocs.org/docsets/MTLFMDBAdapter)
 [![Platform](https://img.shields.io/cocoapods/p/MTLFMDBAdapter.svg?style=flat)](http://cocoadocs.org/docsets/MTLFMDBAdapter)
 
+**MTLFMDBAdapter** is a Mantle adapter that can serialize to and from FMDB (SQLite).
+What this all boils down to is being able to create an MTLModel instance by feeding an FMResultSet and vice versa create the CRUD statements to store the object in FMDB.
+
 ## Usage
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
