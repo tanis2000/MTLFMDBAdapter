@@ -161,10 +161,10 @@ static NSString * const MTLFMDBAdapterThrownExceptionErrorKey = @"MTLFMDBAdapter
 				NSDictionary *userInfo = @{
                                            NSLocalizedDescriptionKey: ex.description,
                                            NSLocalizedFailureReasonErrorKey: ex.reason,
-                                           MTLJSONAdapterThrownExceptionErrorKey: ex
+                                           MTLFMDBAdapterThrownExceptionErrorKey: ex
                                            };
                 
-				*error = [NSError errorWithDomain:MTLJSONAdapterErrorDomain code:MTLJSONAdapterErrorExceptionThrown userInfo:userInfo];
+				*error = [NSError errorWithDomain:MTLFMDBAdapterErrorDomain code:MTLFMDBAdapterErrorExceptionThrown userInfo:userInfo];
 			}
             
 			return nil;
