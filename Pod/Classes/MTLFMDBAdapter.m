@@ -252,14 +252,30 @@ static NSString * const MTLFMDBAdapterThrownExceptionErrorKey = @"MTLFMDBAdapter
 	}
 }
 
++ (NSString *)propertyKeyForModel:(MTLModel<MTLFMDBSerializing> *)model column:(NSString *)column
+{
+    NSDictionary *columns = [model.class FMDBColumnsByPropertyKey];
+    NSArray *allValues = [columns allValues];
+    NSArray *allPropertyKeys = [columns allKeys];
+    NSString *propertyKey = nil;
+    NSIndexSet *idx = [allValues indexesOfObjectsPassingTest:^BOOL(NSString *obj, NSUInteger idx, BOOL *stop) {
+        if ([obj isEqualToString:column]) return YES;
+        return NO;
+    }];
+    if (idx.count > 0 ) propertyKey = allPropertyKeys[idx.firstIndex];
+    NSAssert(propertyKey != nil, @"Property key for column %@ is nil", column);
+    return propertyKey;
+}
+
 + (NSArray *)primaryKeysValues:(MTLModel<MTLFMDBSerializing> *)model {
     NSDictionary *dictionaryValue = model.dictionaryValue;
     NSArray *keys = [model.class FMDBPrimaryKeys];
     NSMutableArray *values = [NSMutableArray array];
     for (NSString *key in keys) {
-        [values addObject:[dictionaryValue valueForKey:key]];
+        NSString *propertyKey = [self propertyKeyForModel:model column:key];
+        [values addObject:[dictionaryValue valueForKey:propertyKey]];
     }
-
+    
     return values;
 }
 
