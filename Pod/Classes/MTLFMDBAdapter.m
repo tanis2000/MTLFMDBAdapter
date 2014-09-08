@@ -259,7 +259,7 @@ static NSString * const MTLFMDBAdapterThrownExceptionErrorKey = @"MTLFMDBAdapter
     NSArray *allPropertyKeys = [columns allKeys];
     NSString *propertyKey = nil;
     NSIndexSet *idx = [allValues indexesOfObjectsPassingTest:^BOOL(NSString *obj, NSUInteger idx, BOOL *stop) {
-        if (![obj isKindOfClass:NSNull.class] && [obj isEqualToString:column]) return YES;
+        if (![obj isKindOfClass:NSNull.class] && ([obj caseInsensitiveCompare:column] == NSOrderedSame)) return YES;
         return NO;
     }];
     if (idx.count > 0 ) propertyKey = allPropertyKeys[idx.firstIndex];
