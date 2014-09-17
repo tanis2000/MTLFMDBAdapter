@@ -94,9 +94,10 @@ static NSString * const MTLFMDBAdapterThrownExceptionErrorKey = @"MTLFMDBAdapter
 	NSMutableDictionary *dictionaryValue = [[NSMutableDictionary alloc] initWithCapacity:self.FMDBDictionary.count];
     
 	NSSet *propertyKeys = [self.modelClass propertyKeys];
+    NSArray *Keys = [[propertyKeys allObjects] sortedArrayUsingSelector:@selector(compare:)];
     
 	for (NSString *columnName in self.FMDBColumnsByPropertyKey) {
-		if ([propertyKeys containsObject:columnName]) continue;
+		if ([Keys containsObject:columnName]) continue;
         
 		if (error != NULL) {
 			NSDictionary *userInfo = @{
@@ -110,7 +111,7 @@ static NSString * const MTLFMDBAdapterThrownExceptionErrorKey = @"MTLFMDBAdapter
 		return nil;
 	}
     
-	for (NSString *propertyKey in propertyKeys) {
+	for (NSString *propertyKey in Keys) {
 		NSString *columnName = [self FMDBColumnForPropertyKey:propertyKey];
 		if (columnName == nil) continue;
         
@@ -282,11 +283,15 @@ static NSString * const MTLFMDBAdapterThrownExceptionErrorKey = @"MTLFMDBAdapter
 + (NSArray *)columnValues:(MTLModel<MTLFMDBSerializing> *)model {
     NSDictionary *columns = [model.class FMDBColumnsByPropertyKey];
 	NSSet *propertyKeys = [model.class propertyKeys];
+    NSArray *Keys = [[propertyKeys allObjects] sortedArrayUsingSelector:@selector(compare:)];
     NSDictionary *dictionaryValue = model.dictionaryValue;
     NSMutableArray *values = [NSMutableArray array];
-    for (NSString *propertyKey in propertyKeys) {
+    for (NSString *propertyKey in Keys)
+    {
 		NSString *keyPath = columns[propertyKey];
-        if (keyPath != nil && ![keyPath isEqual:[NSNull null]]) {
+        
+        if (keyPath != nil && ![keyPath isEqual:[NSNull null]])
+        {
             [values addObject:[dictionaryValue valueForKey:propertyKey]];
         }
     }
@@ -296,11 +301,15 @@ static NSString * const MTLFMDBAdapterThrownExceptionErrorKey = @"MTLFMDBAdapter
 + (NSString *)insertStatementForModel:(MTLModel<MTLFMDBSerializing> *)model {
     NSDictionary *columns = [model.class FMDBColumnsByPropertyKey];
 	NSSet *propertyKeys = [model.class propertyKeys];
+    NSArray *Keys = [[propertyKeys allObjects] sortedArrayUsingSelector:@selector(compare:)];
     NSMutableArray *stats = [NSMutableArray array];
     NSMutableArray *qmarks = [NSMutableArray array];
-	for (NSString *propertyKey in propertyKeys) {
+	for (NSString *propertyKey in Keys)
+    {
 		NSString *keyPath = columns[propertyKey];
-        if (keyPath != nil && ![keyPath isEqual:[NSNull null]]) {
+        
+        if (keyPath != nil && ![keyPath isEqual:[NSNull null]])
+        {
             [stats addObject:keyPath];
             [qmarks addObject:@"?"];
         }
@@ -322,8 +331,9 @@ static NSString * const MTLFMDBAdapterThrownExceptionErrorKey = @"MTLFMDBAdapter
 
     NSDictionary *columns = [model.class FMDBColumnsByPropertyKey];
 	NSSet *propertyKeys = [model.class propertyKeys];
+    NSArray *Keys = [[propertyKeys allObjects] sortedArrayUsingSelector:@selector(compare:)];
     NSMutableArray *stats = [NSMutableArray array];
-	for (NSString *propertyKey in propertyKeys) {
+	for (NSString *propertyKey in Keys) {
 		NSString *keyPath = columns[propertyKey];
         if (keyPath != nil && ![keyPath isEqual:[NSNull null]]) {
             NSString *s = [NSString stringWithFormat:@"%@ = ?", keyPath];
