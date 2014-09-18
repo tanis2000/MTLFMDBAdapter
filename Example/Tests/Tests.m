@@ -49,7 +49,7 @@ describe(@"main tests", ^{
         user.age = [NSNumber numberWithInt:42];
         
         NSString *stmt = [MTLFMDBAdapter insertStatementForModel:user];
-        expect(stmt).to.equal(@"insert into user (age, name, guid) values (?, ?, ?)");
+        expect(stmt).to.equal(@"insert into user (age, guid, name) values (?, ?, ?)");
     });
 
     it(@"can convert from MTLModel to UPDATE statement", ^{
@@ -59,7 +59,7 @@ describe(@"main tests", ^{
         user.age = [NSNumber numberWithInt:42];
         
         NSString *stmt = [MTLFMDBAdapter updateStatementForModel:user];
-        expect(stmt).to.equal(@"update user set age = ?, name = ?, guid = ? where guid = ?");
+        expect(stmt).to.equal(@"update user set age = ?, guid = ?, name = ? where guid = ?");
     });
 
     it(@"can convert from MTLModel to DELETE statement", ^{
