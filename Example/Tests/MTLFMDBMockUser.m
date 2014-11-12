@@ -14,7 +14,6 @@
 {
     return @{
              @"guid": @"guid",
-             @"name": @"name",
              @"age": @"age",
              @"repositories": [NSNull null],
              };

@@ -289,6 +289,7 @@ static NSString * const MTLFMDBAdapterThrownExceptionErrorKey = @"MTLFMDBAdapter
     for (NSString *propertyKey in Keys)
     {
 		NSString *keyPath = columns[propertyKey];
+        keyPath = keyPath ? : propertyKey;
         
         if (keyPath != nil && ![keyPath isEqual:[NSNull null]])
         {
@@ -307,6 +308,7 @@ static NSString * const MTLFMDBAdapterThrownExceptionErrorKey = @"MTLFMDBAdapter
 	for (NSString *propertyKey in Keys)
     {
 		NSString *keyPath = columns[propertyKey];
+        keyPath = keyPath ? : propertyKey;
         
         if (keyPath != nil && ![keyPath isEqual:[NSNull null]])
         {
@@ -335,6 +337,8 @@ static NSString * const MTLFMDBAdapterThrownExceptionErrorKey = @"MTLFMDBAdapter
     NSMutableArray *stats = [NSMutableArray array];
 	for (NSString *propertyKey in Keys) {
 		NSString *keyPath = columns[propertyKey];
+        keyPath = keyPath ? : propertyKey;
+        
         if (keyPath != nil && ![keyPath isEqual:[NSNull null]]) {
             NSString *s = [NSString stringWithFormat:@"%@ = ?", keyPath];
             [stats addObject:s];
