@@ -1,3 +1,5 @@
+source 'https://github.com/CocoaPods/Specs.git'
+
 target 'MTLFMDBAdapter', :exclusive => true do
   pod "MTLFMDBAdapter", :path => "../"
 end
@@ -8,5 +10,5 @@ target 'Tests', :exclusive => true do
   pod 'Specta', '~> 0.2.1'
   pod 'Expecta'
   pod 'FBSnapshotTestCase'
-  pod 'Expecta+Snapshots'
+  #pod 'Expecta+Snapshots'
 end

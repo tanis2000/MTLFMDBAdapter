@@ -3,3 +3,7 @@
 language: objective-c
 script:
 - xctool test -workspace Example/MTLFMDBAdapter.xcworkspace -scheme MTLFMDBAdapter -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
+# fix for https://github.com/travis-ci/travis-ci/issues/2836
+before_install:
+  - brew update
+  - if brew outdated | grep -qx xctool; then brew upgrade xctool; fi
