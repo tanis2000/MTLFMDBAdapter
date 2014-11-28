@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "MTLFMDBAdapter"
-  s.version          = "0.1.5"
+  s.version          = "0.1.6"
   s.summary          = "A Mantle adapter to serialize to and from FMDB."
   s.description      = <<-DESC
                        MTLFMDBAdapter is a Mantle adapter that can be used
@@ -21,7 +21,7 @@ Pod::Spec.new do |s|
   s.license          = 'MIT'
   s.author           = { "Valerio Santinelli" => "santinelli@altralogica.it" }
   s.source           = { :git => "https://github.com/tanis2000/MTLFMDBAdapter.git", :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/santinellival'
+  s.social_media_url = 'https://twitter.com/santinellival'
 
   s.platform     = :ios, '7.0'
   s.requires_arc = true
