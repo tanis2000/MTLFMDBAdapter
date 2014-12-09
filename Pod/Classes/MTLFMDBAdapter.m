@@ -347,7 +347,7 @@ static NSString * const MTLFMDBAdapterThrownExceptionErrorKey = @"MTLFMDBAdapter
         }
     }
     
-    NSString *statement = [NSString stringWithFormat:@"update %@ set %@ where %@", [model.class FMDBTableName], [stats componentsJoinedByString:@", "], [where componentsJoinedByString:@", "]];
+    NSString *statement = [NSString stringWithFormat:@"update %@ set %@ where %@", [model.class FMDBTableName], [stats componentsJoinedByString:@", "], [where componentsJoinedByString:@" AND "]];
     
     return statement;
 }
