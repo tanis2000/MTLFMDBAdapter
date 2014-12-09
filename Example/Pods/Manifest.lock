@@ -9,7 +9,7 @@ PODS:
   - Mantle (1.5.1):
     - Mantle/extobjc (= 1.5.1)
   - Mantle/extobjc (1.5.1)
-  - MTLFMDBAdapter (0.1.6):
+  - MTLFMDBAdapter (0.1.7):
     - FMDB (~> 2.3)
     - Mantle (~> 1.5)
   - Specta (0.2.1)
@@ -29,7 +29,7 @@ SPEC CHECKSUMS:
   FBSnapshotTestCase: f9f225b5ba11c8d8c09075590490df16314e4d62
   FMDB: 0b2fa25e5264ef177973c0cb8c02c711107979aa
   Mantle: d7c5ac734579ec751c58fecbf56189853056c58c
-  MTLFMDBAdapter: 43afacb88901045ae1c35eca6f391d2e473a1026
+  MTLFMDBAdapter: 206b128f974703ebe386fbfb7fcc4142acbba485
   Specta: 9141310f46b1f68b676650ff2854e1ed0b74163a
 
 COCOAPODS: 0.35.0
