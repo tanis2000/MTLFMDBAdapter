@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "MTLFMDBAdapter"
-  s.version          = "0.1.6"
+  s.version          = "0.1.7"
   s.summary          = "A Mantle adapter to serialize to and from FMDB."
   s.description      = <<-DESC
                        MTLFMDBAdapter is a Mantle adapter that can be used
