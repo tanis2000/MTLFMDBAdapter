@@ -50,6 +50,16 @@
 
 @optional
 
+/**
+ Specify the `NSValueTransformer` that should be used to transform values
+ fetched from FMDB.
+ 
+ @param key The key corresponding to the column in FMDB
+ 
+ @return the `NSValueTransformer` that should be used
+ */
+- (NSValueTransformer *)FMDBTransformerForKey:(NSString *)key;
+
 @end
 
 /**
