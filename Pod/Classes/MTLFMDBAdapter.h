@@ -176,4 +176,13 @@ extern const NSInteger MTLFMDBAdapterErrorInvalidFMResultSetMapping;
  @return an NSString with the INSERT statement to use with FMDB.
  */
 + (NSString *)deleteStatementForModel:(MTLModel<MTLFMDBSerializing> *)model;
+
+/**
+ The WHERE statement used for UPDATE and DELETE operations.
+ 
+ @param model the MTLModel object we want to serialize to FMDB
+ 
+ @return an NSString with the WHERE statement of the query.
+ */
++ (NSString *)whereStatementForModel:(MTLModel<MTLFMDBSerializing> *)model;
 @end
