@@ -50,6 +50,16 @@
 
 @optional
 
+/**
+ Specify the `NSValueTransformer` that should be used to transform values
+ fetched from FMDB.
+ 
+ @param key The key corresponding to the column in FMDB
+ 
+ @return the `NSValueTransformer` that should be used
+ */
+- (NSValueTransformer *)FMDBTransformerForKey:(NSString *)key;
+
 @end
 
 /**
@@ -166,4 +176,13 @@ extern const NSInteger MTLFMDBAdapterErrorInvalidFMResultSetMapping;
  @return an NSString with the INSERT statement to use with FMDB.
  */
 + (NSString *)deleteStatementForModel:(MTLModel<MTLFMDBSerializing> *)model;
+
+/**
+ The WHERE statement used for UPDATE and DELETE operations.
+ 
+ @param model the MTLModel object we want to serialize to FMDB
+ 
+ @return an NSString with the WHERE statement of the query.
+ */
++ (NSString *)whereStatementForModel:(MTLModel<MTLFMDBSerializing> *)model;
 @end

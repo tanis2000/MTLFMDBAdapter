@@ -325,14 +325,6 @@ static NSString * const MTLFMDBAdapterThrownExceptionErrorKey = @"MTLFMDBAdapter
 }
 
 + (NSString *)updateStatementForModel:(MTLModel<MTLFMDBSerializing> *)model {
-    // Build the where statement
-    NSArray *keys = [model.class FMDBPrimaryKeys];
-    NSMutableArray *where = [NSMutableArray array];
-    for (NSString *key in keys) {
-        NSString *s = [NSString stringWithFormat:@"%@ = ?", key];
-        [where addObject:s];
-    }
-
     NSDictionary *columns = [model.class FMDBColumnsByPropertyKey];
 	NSSet *propertyKeys = [model.class propertyKeys];
     NSArray *Keys = [[propertyKeys allObjects] sortedArrayUsingSelector:@selector(compare:)];
@@ -347,25 +339,26 @@ static NSString * const MTLFMDBAdapterThrownExceptionErrorKey = @"MTLFMDBAdapter
         }
     }
     
-    NSString *statement = [NSString stringWithFormat:@"update %@ set %@ where %@", [model.class FMDBTableName], [stats componentsJoinedByString:@", "], [where componentsJoinedByString:@" AND "]];
-    
-    return statement;
+    return [NSString stringWithFormat:@"update %@ set %@ where %@", [model.class FMDBTableName], [stats componentsJoinedByString:@", "], [self whereStatementForModel:model]];
 }
 
 + (NSString *)deleteStatementForModel:(MTLModel<MTLFMDBSerializing> *)model {
     NSParameterAssert([model.class conformsToProtocol:@protocol(MTLFMDBSerializing)]);
     
-    NSArray *keys = [model.class FMDBPrimaryKeys];
-    NSMutableArray *stats = [NSMutableArray array];
-    for (NSString *key in keys) {
-        NSString *s = [NSString stringWithFormat:@"%@ = ?", key];
-        [stats addObject:s];
-    }
-    NSString *statement = [NSString stringWithFormat:@"delete from %@ where %@", [model.class FMDBTableName], [stats componentsJoinedByString:@" AND "]];
-    
-    return statement;
+    return [NSString stringWithFormat:@"delete from %@ where %@", [model.class FMDBTableName], [self whereStatementForModel:model]];
 }
 
++ (NSString *)whereStatementForModel:(MTLModel<MTLFMDBSerializing> *)model
+{
+    // Build the where statement
+    NSArray *keys = [model.class FMDBPrimaryKeys];
+    NSMutableArray *where = [NSMutableArray array];
+    for (NSString *key in keys) {
+        NSString *s = [NSString stringWithFormat:@"%@ = ?", key];
+        [where addObject:s];
+    }
+    return [where componentsJoinedByString:@" AND "];
+}
 
 
 @end
