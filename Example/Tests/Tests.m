@@ -91,6 +91,40 @@ describe(@"main tests", ^{
         expect(resultUser.name).to.equal(@"John Doe");
     });
 
+    it(@"empty number from FMResultSet converts to nil in MTLModel", ^{
+        MTLFMDBMockUser *resultUser = nil;
+        MTLFMDBMockUser *user = [[MTLFMDBMockUser alloc] init];
+        user.age = nil;
+        
+        NSString *stmt = [MTLFMDBAdapter insertStatementForModel:user];
+        NSArray *params = [MTLFMDBAdapter columnValues:user];
+        [db executeUpdate:stmt withArgumentsInArray:params];
+        
+        NSError *error = nil;
+        FMResultSet *resultSet = [db executeQuery:@"select * from user"];
+        if ([resultSet next]) {
+            resultUser = [MTLFMDBAdapter modelOfClass:MTLFMDBMockUser.class fromFMResultSet:resultSet error:&error];
+        }
+        expect(resultUser.age).to.equal(nil);
+    });
+    
+    it(@"number from FMResultSet converts to number in MTLModel", ^{
+        MTLFMDBMockUser *resultUser = nil;
+        MTLFMDBMockUser *user = [[MTLFMDBMockUser alloc] init];
+        user.age = @(42);
+        
+        NSString *stmt = [MTLFMDBAdapter insertStatementForModel:user];
+        NSArray *params = [MTLFMDBAdapter columnValues:user];
+        [db executeUpdate:stmt withArgumentsInArray:params];
+        
+        NSError *error = nil;
+        FMResultSet *resultSet = [db executeQuery:@"select * from user"];
+        if ([resultSet next]) {
+            resultUser = [MTLFMDBAdapter modelOfClass:MTLFMDBMockUser.class fromFMResultSet:resultSet error:&error];
+        }
+        expect(resultUser.age).to.equal(@(42));
+    });
+
 });
 
 
