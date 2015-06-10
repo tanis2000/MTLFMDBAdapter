@@ -120,7 +120,9 @@ static NSString * const MTLFMDBAdapterThrownExceptionErrorKey = @"MTLFMDBAdapter
 		id value;
 		@try {
             if ([attributes->objectClass isSubclassOfClass:[NSNumber class]]) {
-                value = [NSNumber numberWithDouble:[[resultSet stringForColumn:columnName] doubleValue]];
+                NSString *stringForColumn = [resultSet stringForColumn:columnName];
+                if(stringForColumn)
+                    value = [NSNumber numberWithDouble:[stringForColumn doubleValue]];
             } else if ([attributes->objectClass isSubclassOfClass:[NSData class]]) {
                 value = [resultSet dataForColumn:columnName];
             } else {
