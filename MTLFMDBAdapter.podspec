@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "MTLFMDBAdapter"
-  s.version          = "0.1.9"
+  s.version          = "0.2.0"
   s.summary          = "A Mantle adapter to serialize to and from FMDB."
   s.description      = <<-DESC
                        MTLFMDBAdapter is a Mantle adapter that can be used
@@ -31,6 +31,6 @@ Pod::Spec.new do |s|
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
-  s.dependency 'Mantle', '~> 1.5'
+  s.dependency 'Mantle', '~> 2.0'
   s.dependency 'FMDB', '~> 2.3'
 end

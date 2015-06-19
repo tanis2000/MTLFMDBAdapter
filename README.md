@@ -148,6 +148,12 @@ it, simply add the following line to your Podfile:
 
     pod "MTLFMDBAdapter"
 
+## Changelog
+
+### 0.2.0
+
+Version 0.2.0 introduced Mantle 2.0 as a dependency. This might break your models if you're still using version 1.x of Mantle. Please refer to [Mantle breaking changes](https://github.com/Mantle/Mantle/blob/master/CHANGELOG.md#breaking-changes) for further reference.
+
 ## Author
 
 Valerio Santinelli, santinelli@altralogica.it
