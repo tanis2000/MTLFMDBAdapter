@@ -316,8 +316,12 @@ static NSString * const MTLFMDBAdapterThrownExceptionErrorKey = @"MTLFMDBAdapter
         {
             id object;
             if ([attributes->objectClass isSubclassOfClass:NSDate.class]) {
-                NSDate *date = [dictionaryValue valueForKey:propertyKey];
-                object = [NSNumber numberWithInteger:date.timeIntervalSince1970*1000];
+                NSDate *date = [dictionaryValue objectForKey:propertyKey];
+                if (date != nil && ![date isEqual:[NSNull null]]) {
+                    object = [NSNumber numberWithInteger:date.timeIntervalSince1970*1000];
+                } else {
+                    object = [NSNull null];
+                }
             } else {
                 object = [dictionaryValue valueForKey:propertyKey];
             }
