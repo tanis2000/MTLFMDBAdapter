@@ -32,7 +32,7 @@ describe(@"main tests", ^{
         [db executeUpdate:@"drop table if exists repository"];
 
         [db executeUpdate:@"create table if not exists user "
-         "(guid text primary key, name text, age integer)"];
+         "(guid text primary key, name text, age integer, birthday integer, banned integer)"];
         [db executeUpdate:@"create table if not exists repository "
          "(guid text primary key, url text)"];
 
@@ -49,7 +49,7 @@ describe(@"main tests", ^{
         user.age = [NSNumber numberWithInt:42];
         
         NSString *stmt = [MTLFMDBAdapter insertStatementForModel:user];
-        expect(stmt).to.equal(@"insert into user (age, guid, name) values (?, ?, ?)");
+        expect(stmt).to.equal(@"insert into user (age, banned, birthday, guid, name) values (?, ?, ?, ?, ?)");
     });
 
     it(@"can convert from MTLModel to UPDATE statement", ^{
@@ -59,7 +59,7 @@ describe(@"main tests", ^{
         user.age = [NSNumber numberWithInt:42];
         
         NSString *stmt = [MTLFMDBAdapter updateStatementForModel:user];
-        expect(stmt).to.equal(@"update user set age = ?, guid = ?, name = ? where guid = ?");
+        expect(stmt).to.equal(@"update user set age = ?, banned = ?, birthday = ?, guid = ?, name = ? where guid = ?");
     });
 
     it(@"can convert from MTLModel to DELETE statement", ^{
