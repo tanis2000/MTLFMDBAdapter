@@ -138,7 +138,7 @@ static NSString * const MTLFMDBAdapterThrownExceptionErrorKey = @"MTLFMDBAdapter
                             [NSDate dateWithTimeIntervalSince1970:timeIntervalInSeconds.doubleValue];
                     }
                 }
-                value = dateFromTimestampString?:stringForColumn;
+                value = dateFromTimestampString;
             } else {
                 value = [resultSet stringForColumn:columnName];
             }

@@ -146,25 +146,6 @@ describe(@"main tests", ^{
         expect([resultUser.birthday timeIntervalSince1970]).to.equal(birthdayTimestamp);
     });
     
-    it(@"number containing a timestamp in miliseconds from FMResultSet converts to NSDate in NSDate property of MTLModel", ^{
-        NSNumber *birthdayTimestamp = @(331911043000);
-        MTLFMDBMockUser *resultUser;
-        MTLFMDBMockUser *user = [[MTLFMDBMockUser alloc] init];
-        user.birthday = [NSDate dateWithTimeIntervalSince1970:birthdayTimestamp.doubleValue];
-        
-        NSString *stmt = [MTLFMDBAdapter insertStatementForModel:user];
-        NSArray *params = [MTLFMDBAdapter columnValues:user];
-        [db executeUpdate:stmt withArgumentsInArray:params];
-        
-        NSError *error = nil;
-        FMResultSet *resultSet = [db executeQuery:@"select * from user"];
-        if ([resultSet next]) {
-            resultUser = [MTLFMDBAdapter modelOfClass:MTLFMDBMockUser.class fromFMResultSet:resultSet error:&error];
-        }
-        expect(resultUser.birthday).to.beKindOf(NSDate.class);
-        expect([resultUser.birthday timeIntervalSince1970]*1000).to.equal(birthdayTimestamp);
-    });
-    
 });
 
 
