@@ -125,6 +125,20 @@ static NSString * const MTLFMDBAdapterThrownExceptionErrorKey = @"MTLFMDBAdapter
                     value = [NSNumber numberWithDouble:[stringForColumn doubleValue]];
             } else if ([attributes->objectClass isSubclassOfClass:[NSData class]]) {
                 value = [resultSet dataForColumn:columnName];
+            } else if ([attributes->objectClass isSubclassOfClass:NSDate.class]) {
+                NSString *stringForColumn = [resultSet stringForColumn:columnName];
+                NSDate *dateFromTimestampString;
+                if (stringForColumn) {
+                    if (stringForColumn.length == 9) {
+                        dateFromTimestampString =
+                            [NSDate dateWithTimeIntervalSince1970:stringForColumn.doubleValue];
+                    } else if (stringForColumn.length == 12) {
+                        NSNumber *timeIntervalInSeconds = @(floor(stringForColumn.doubleValue/1000));
+                        dateFromTimestampString =
+                            [NSDate dateWithTimeIntervalSince1970:timeIntervalInSeconds.doubleValue];
+                    }
+                }
+                value = dateFromTimestampString?:stringForColumn;
             } else {
                 value = [resultSet stringForColumn:columnName];
             }
