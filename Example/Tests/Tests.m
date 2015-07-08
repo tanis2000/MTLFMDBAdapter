@@ -146,6 +146,22 @@ describe(@"main tests", ^{
         expect([resultUser.birthday timeIntervalSince1970]).to.equal(birthdayTimestamp);
     });
     
+    it(@"number with a 1 or 0 from FMResultSet converts to BOOL in BOOL property of MTLModel", ^{
+        MTLFMDBMockUser *resultUser;
+        MTLFMDBMockUser *user = [[MTLFMDBMockUser alloc] init];
+        user.banned = YES;
+        
+        NSString *stmt = [MTLFMDBAdapter insertStatementForModel:user];
+        NSArray *params = [MTLFMDBAdapter columnValues:user];
+        [db executeUpdate:stmt withArgumentsInArray:params];
+        
+        NSError *error = nil;
+        FMResultSet *resultSet = [db executeQuery:@"select * from user"];
+        if ([resultSet next]) {
+            resultUser = [MTLFMDBAdapter modelOfClass:MTLFMDBMockUser.class fromFMResultSet:resultSet error:&error];
+        }
+        expect(resultUser.banned).to.equal(YES);
+    });
 });
 
 
