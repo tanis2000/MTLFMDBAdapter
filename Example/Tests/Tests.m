@@ -32,7 +32,7 @@ describe(@"main tests", ^{
         [db executeUpdate:@"drop table if exists repository"];
 
         [db executeUpdate:@"create table if not exists user "
-         "(guid text primary key, name text, age integer)"];
+         "(guid text primary key, name text, age integer, birthday integer, banned integer)"];
         [db executeUpdate:@"create table if not exists repository "
          "(guid text primary key, url text)"];
 
@@ -49,7 +49,7 @@ describe(@"main tests", ^{
         user.age = [NSNumber numberWithInt:42];
         
         NSString *stmt = [MTLFMDBAdapter insertStatementForModel:user];
-        expect(stmt).to.equal(@"insert into user (age, guid, name) values (?, ?, ?)");
+        expect(stmt).to.equal(@"insert into user (age, banned, birthday, guid, name) values (?, ?, ?, ?, ?)");
     });
 
     it(@"can convert from MTLModel to UPDATE statement", ^{
@@ -59,7 +59,7 @@ describe(@"main tests", ^{
         user.age = [NSNumber numberWithInt:42];
         
         NSString *stmt = [MTLFMDBAdapter updateStatementForModel:user];
-        expect(stmt).to.equal(@"update user set age = ?, guid = ?, name = ? where guid = ?");
+        expect(stmt).to.equal(@"update user set age = ?, banned = ?, birthday = ?, guid = ?, name = ? where guid = ?");
     });
 
     it(@"can convert from MTLModel to DELETE statement", ^{
@@ -78,6 +78,8 @@ describe(@"main tests", ^{
         user.guid = @"myuniqueid";
         user.name = @"John Doe";
         user.age = [NSNumber numberWithInt:42];
+        user.birthday = [NSDate dateWithTimeIntervalSince1970:331911043];
+        user.banned = YES;
         
         NSString *stmt = [MTLFMDBAdapter insertStatementForModel:user];
         NSArray *params = [MTLFMDBAdapter columnValues:user];
@@ -123,6 +125,25 @@ describe(@"main tests", ^{
             resultUser = [MTLFMDBAdapter modelOfClass:MTLFMDBMockUser.class fromFMResultSet:resultSet error:&error];
         }
         expect(resultUser.age).to.equal(@(42));
+    });
+    
+    it(@"number containing a timestamp in seconds from FMResultSet converts to NSDate in NSDate property of MTLModel", ^{
+        NSNumber *birthdayTimestamp = @(331911043);
+        MTLFMDBMockUser *resultUser;
+        MTLFMDBMockUser *user = [[MTLFMDBMockUser alloc] init];
+        user.birthday = [NSDate dateWithTimeIntervalSince1970:birthdayTimestamp.doubleValue];
+
+        NSString *stmt = [MTLFMDBAdapter insertStatementForModel:user];
+        NSArray *params = [MTLFMDBAdapter columnValues:user];
+        [db executeUpdate:stmt withArgumentsInArray:params];
+        
+        NSError *error = nil;
+        FMResultSet *resultSet = [db executeQuery:@"select * from user"];
+        if ([resultSet next]) {
+            resultUser = [MTLFMDBAdapter modelOfClass:MTLFMDBMockUser.class fromFMResultSet:resultSet error:&error];
+        }
+        expect(resultUser.birthday).to.beKindOf(NSDate.class);
+        expect([resultUser.birthday timeIntervalSince1970]).to.equal(birthdayTimestamp);
     });
     
 });

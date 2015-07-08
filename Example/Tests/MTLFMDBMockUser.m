@@ -15,6 +15,8 @@
     return @{
              @"guid": @"guid",
              @"age": @"age",
+             @"birthday": @"birthday",
+             @"banned": @"banned",
              @"repositories": [NSNull null],
              };
 }
