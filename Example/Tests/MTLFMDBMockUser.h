@@ -16,5 +16,7 @@
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSNumber *age;
 @property (nonatomic, copy) NSSet *repositories;
+@property (nonatomic, copy) NSDate *birthday;
+@property (nonatomic, assign) BOOL banned;
 
 @end
