@@ -1,1 +1,5 @@
-PODS_MTLFMDBADAPTER_MANTLE_OTHER_LDFLAGS = -framework "Foundation"
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Private" "${PODS_ROOT}/Headers/Private/Mantle" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/Expecta" "${PODS_ROOT}/Headers/Public/FBSnapshotTestCase" "${PODS_ROOT}/Headers/Public/FMDB" "${PODS_ROOT}/Headers/Public/MTLFMDBAdapter" "${PODS_ROOT}/Headers/Public/Mantle" "${PODS_ROOT}/Headers/Public/Specta"
+OTHER_LDFLAGS = -framework "Foundation"
+PODS_ROOT = ${SRCROOT}
+SKIP_INSTALL = YES

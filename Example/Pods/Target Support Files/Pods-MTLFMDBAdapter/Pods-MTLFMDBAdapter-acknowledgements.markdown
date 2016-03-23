@@ -34,7 +34,7 @@ THE SOFTWARE.
 
 ## MTLFMDBAdapter
 
-Copyright (c) 2014 Valerio Santinelli <santinelli@altralogica.it>
+Copyright (c) 2014-2015 Valerio Santinelli <santinelli@altralogica.it>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
