@@ -1,8 +1,8 @@
 {
   "name": "MTLFMDBAdapter",
-  "version": "0.1.9",
+  "version": "0.2.1",
   "summary": "A Mantle adapter to serialize to and from FMDB.",
-  "description": "                       MTLFMDBAdapter is a Mantle adapter that can be used\n                       to serialize a Mantle object to FMDB (SQLite) by creating\n                       the necessary INSERT/UPDATE/DELETE statements and vice versa.\n",
+  "description": "MTLFMDBAdapter is a Mantle adapter that can be used\nto serialize a Mantle object to FMDB (SQLite) by creating\nthe necessary INSERT/UPDATE/DELETE statements and vice versa.",
   "homepage": "https://github.com/tanis2000/MTLFMDBAdapter",
   "license": "MIT",
   "authors": {
@@ -10,7 +10,7 @@
   },
   "source": {
     "git": "https://github.com/tanis2000/MTLFMDBAdapter.git",
-    "tag": "0.1.9"
+    "tag": "0.2.1"
   },
   "social_media_url": "https://twitter.com/santinellival",
   "platforms": {

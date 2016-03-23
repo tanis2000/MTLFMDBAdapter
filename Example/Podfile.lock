@@ -1,15 +1,13 @@
 PODS:
   - Expecta (1.0.0)
   - FBSnapshotTestCase (1.8.1)
-  - FMDB (2.5):
-    - FMDB/standard (= 2.5)
-  - FMDB/common (2.5)
-  - FMDB/standard (2.5):
-    - FMDB/common
-  - Mantle (2.0.2):
-    - Mantle/extobjc (= 2.0.2)
-  - Mantle/extobjc (2.0.2)
-  - MTLFMDBAdapter (0.1.9):
+  - FMDB (2.6.2):
+    - FMDB/standard (= 2.6.2)
+  - FMDB/standard (2.6.2)
+  - Mantle (2.0.6):
+    - Mantle/extobjc (= 2.0.6)
+  - Mantle/extobjc (2.0.6)
+  - MTLFMDBAdapter (0.2.1):
     - FMDB (~> 2.3)
     - Mantle (~> 2.0)
   - Specta (0.2.1)
@@ -22,14 +20,14 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   MTLFMDBAdapter:
-    :path: ../
+    :path: "../"
 
 SPEC CHECKSUMS:
   Expecta: 32604574add2c46a36f8d2f716b6c5736eb75024
   FBSnapshotTestCase: 3dc3899168747a0319c5278f5b3445c13a6532dd
-  FMDB: 96e8f1bcc1329e269330f99770ad4285d9003e52
-  Mantle: 967fd31ea0220890b2e76589198996b534bb3fb1
-  MTLFMDBAdapter: 6a273532f0b70910a88e840cc78aadda264ccb81
+  FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
+  Mantle: 299966b00759634931699f69cb6a30b9239b944d
+  MTLFMDBAdapter: 81c38821e7d391e8558785e22cd227d77aa67685
   Specta: 15a276a6343867b426d5ed135d5aa4d04123a573
 
-COCOAPODS: 0.37.1
+COCOAPODS: 0.39.0
