@@ -297,7 +297,12 @@ static NSString * const MTLFMDBAdapterThrownExceptionErrorKey = @"MTLFMDBAdapter
         
         if (keyPath != nil && ![keyPath isEqual:[NSNull null]])
         {
-            [values addObject:[dictionaryValue valueForKey:propertyKey]];
+            id v = [dictionaryValue valueForKey:keyPath];
+            if (v == nil) {
+                NSLog(@"Warning: value for key %@ is nil");
+                v = [NSNull null];
+            }
+            [values addObject:v];
         }
     }
     return values;
