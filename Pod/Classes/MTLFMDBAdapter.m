@@ -292,14 +292,14 @@ static NSString * const MTLFMDBAdapterThrownExceptionErrorKey = @"MTLFMDBAdapter
     NSMutableArray *values = [NSMutableArray array];
     for (NSString *propertyKey in Keys)
     {
-		NSString *keyPath = columns[propertyKey];
+      NSString *keyPath = columns[propertyKey];
         keyPath = keyPath ? : propertyKey;
         
         if (keyPath != nil && ![keyPath isEqual:[NSNull null]])
         {
-            id v = [dictionaryValue valueForKey:keyPath];
+            id v = [dictionaryValue valueForKey:propertyKey];
             if (v == nil) {
-                NSLog(@"Warning: value for key %@ is nil", keyPath);
+                NSLog(@"Warning: value for key %@ is nil", propertyKey);
                 v = [NSNull null];
             }
             [values addObject:v];
