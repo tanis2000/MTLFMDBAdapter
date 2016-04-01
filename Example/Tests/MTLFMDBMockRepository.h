@@ -14,5 +14,7 @@
 
 @property (nonatomic, copy) NSString *guid;
 @property (nonatomic, copy) NSString *url;
+@property (nonatomic, copy) NSString *desc;
+@property (nonatomic, copy) NSString *unused;
 
 @end

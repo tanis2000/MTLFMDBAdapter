@@ -15,6 +15,8 @@
     return @{
              @"guid": @"guid",
              @"url": @"url",
+             @"desc": @"repo_description",
+             @"unused": [NSNull null]
              };
 }
 

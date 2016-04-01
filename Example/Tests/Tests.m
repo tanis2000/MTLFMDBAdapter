@@ -10,6 +10,7 @@
 #import <Mantle/Mantle.h>
 #import <MTLFMDBAdapter/MTLFMDBAdapter.h>
 #import "MTLFMDBMockUser.h"
+#import "MTLFMDBMockRepository.h"
 
 FMDatabase *db;
 
@@ -34,7 +35,7 @@ describe(@"main tests", ^{
         [db executeUpdate:@"create table if not exists user "
          "(guid text primary key, name text, age integer)"];
         [db executeUpdate:@"create table if not exists repository "
-         "(guid text primary key, url text)"];
+         "(guid text primary key, url text, repo_description text)"];
 
     });
     
@@ -124,7 +125,25 @@ describe(@"main tests", ^{
         }
         expect(resultUser.age).to.equal(@(42));
     });
+  
+  it(@"can use the correct column names from the mapping", ^{
+    MTLFMDBMockRepository *repo = [[MTLFMDBMockRepository alloc] init];
+    repo.guid = @"myuniqueid";
+    repo.url = @"https://github.com/tanis2000/MTLFMDBAdapter";
+    repo.desc = @"Mantle adapter for FMDB";
     
+    NSString *stmt = [MTLFMDBAdapter insertStatementForModel:repo];
+    NSArray *params = [MTLFMDBAdapter columnValues:repo];
+    [db executeUpdate:stmt withArgumentsInArray:params];
+    
+    NSError *error = nil;
+    FMResultSet *resultSet = [db executeQuery:@"select * from repository"];
+    if ([resultSet next]) {
+      repo = [MTLFMDBAdapter modelOfClass:MTLFMDBMockRepository.class fromFMResultSet:resultSet error:&error];
+    }
+    expect(repo.desc).to.equal(@"Mantle adapter for FMDB");
+  });
+
 });
 
 
