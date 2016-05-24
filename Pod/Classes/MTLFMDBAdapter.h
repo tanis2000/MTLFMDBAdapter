@@ -1,6 +1,6 @@
 //
 //  MTLFMDBAdapter.h
-//  Mantle
+//  MTLFMDBAdapter
 //
 //  Created by Valerio Santinelli on 16/07/14.
 //  Copyright (c) 2014 Valerio Santinelli. All rights reserved.

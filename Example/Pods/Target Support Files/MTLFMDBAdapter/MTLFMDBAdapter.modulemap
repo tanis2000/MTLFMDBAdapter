@@ -1,0 +1,6 @@
+framework module MTLFMDBAdapter {
+  umbrella header "MTLFMDBAdapter-umbrella.h"
+
+  export *
+  module * { export * }
+}

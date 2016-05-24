@@ -1,9 +1,9 @@
 //
 //  MTLFMDBAdapter.m
-//  TiVoto
+//  MTLFMDBAdapter
 //
 //  Created by Valerio Santinelli on 16/07/14.
-//  Copyright (c) 2014 Altralogica s.r.l. All rights reserved.
+//  Copyright (c) 2014 Valerio Santinelli. All rights reserved.
 //
 
 #import <objc/runtime.h>

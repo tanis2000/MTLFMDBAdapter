@@ -1,14 +1,16 @@
 source 'https://github.com/CocoaPods/Specs.git'
+use_frameworks!
 
-target 'MTLFMDBAdapter', :exclusive => true do
-  pod "MTLFMDBAdapter", :path => "../"
+target 'MTLFMDBAdapter' do
+    platform :ios, '8.0'
+  pod 'MTLFMDBAdapter', :path => "../"
+  
+  target 'Tests' do
+      inherit! :search_paths
+      pod 'Specta', '~> 1.0'
+      pod 'Expecta', '~> 1.0'
+      #pod 'FBSnapshotTestCase'
+      #pod 'Expecta+Snapshots'
+    end
 end
 
-target 'Tests', :exclusive => true do
-  pod "MTLFMDBAdapter", :path => "../"
-
-  pod 'Specta', '~> 0.2.1'
-  pod 'Expecta'
-  pod 'FBSnapshotTestCase'
-  #pod 'Expecta+Snapshots'
-end
