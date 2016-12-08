@@ -150,6 +150,16 @@ it, simply add the following line to your Podfile:
 
 ## Changelog
 
+### 0.3.2
+
+- Fixed the reverse transformer being ignored
+
+
+### 0.3.1
+
+- Added a new test for custom transformers
+
+
 ### 0.3
 
 - Dropped support for iOS 7.x The new minimum supported version is iOS 8.0
