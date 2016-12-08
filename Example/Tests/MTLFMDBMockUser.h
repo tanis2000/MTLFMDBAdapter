@@ -16,5 +16,6 @@
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSNumber *age;
 @property (nonatomic, copy) NSSet *repositories;
+@property (nonatomic, copy) NSDate *lastupdateat;
 
 @end
