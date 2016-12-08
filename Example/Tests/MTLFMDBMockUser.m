@@ -16,6 +16,7 @@
              @"guid": @"guid",
              @"age": @"age",
              @"repositories": [NSNull null],
+             @"lastupdateat": @"lastupdateat"
              };
 }
 
@@ -28,4 +29,21 @@
     return @"user";
 }
 
++ (NSDateFormatter *)dateFormatter {
+  NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+  dateFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+  dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss'Z'";
+  return dateFormatter;
+}
+
++ (NSValueTransformer *)lastupdateatFMDBTransformer {
+  return [MTLValueTransformer transformerUsingForwardBlock:^id(NSString *dateString, BOOL *success, NSError *__autoreleasing *error) {
+    NSTimeInterval interval = [dateString longLongValue];
+    return [NSDate dateWithTimeIntervalSince1970: interval];
+    // We are storing dates as Unix epoch, otherwise you'd use the following commented statement
+    //return [self.dateFormatter dateFromString:dateString];
+  } reverseBlock:^id(NSDate *date, BOOL *success, NSError *__autoreleasing *error) {
+    return [self.dateFormatter stringFromDate:date];
+  }];
+}
 @end

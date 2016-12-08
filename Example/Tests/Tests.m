@@ -33,7 +33,7 @@ describe(@"main tests", ^{
         [db executeUpdate:@"drop table if exists repository"];
 
         [db executeUpdate:@"create table if not exists user "
-         "(guid text primary key, name text, age integer)"];
+         "(guid text primary key, name text, age integer, lastupdateat date)"];
         [db executeUpdate:@"create table if not exists repository "
          "(guid text primary key, url text, repo_description text)"];
 
@@ -50,7 +50,7 @@ describe(@"main tests", ^{
         user.age = [NSNumber numberWithInt:42];
         
         NSString *stmt = [MTLFMDBAdapter insertStatementForModel:user];
-        expect(stmt).to.equal(@"insert into user (age, guid, name) values (?, ?, ?)");
+        expect(stmt).to.equal(@"insert into user (age, guid, lastupdateat, name) values (?, ?, ?, ?)");
     });
 
     it(@"can convert from MTLModel to UPDATE statement", ^{
@@ -60,7 +60,7 @@ describe(@"main tests", ^{
         user.age = [NSNumber numberWithInt:42];
         
         NSString *stmt = [MTLFMDBAdapter updateStatementForModel:user];
-        expect(stmt).to.equal(@"update user set age = ?, guid = ?, name = ? where guid = ?");
+        expect(stmt).to.equal(@"update user set age = ?, guid = ?, lastupdateat = ?, name = ? where guid = ?");
     });
 
     it(@"can convert from MTLModel to DELETE statement", ^{
@@ -142,6 +142,28 @@ describe(@"main tests", ^{
       repo = [MTLFMDBAdapter modelOfClass:MTLFMDBMockRepository.class fromFMResultSet:resultSet error:&error];
     }
     expect(repo.desc).to.equal(@"Mantle adapter for FMDB");
+  });
+
+  it(@"can serialize an NSDate to string on db and back", ^{
+    MTLFMDBMockUser *user = [[MTLFMDBMockUser alloc] init];
+    user.guid = @"myuniqueid";
+    user.name = @"John Doe";
+    user.age = [NSNumber numberWithInt:42];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+    dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss'Z'";
+    NSDate *originalDate = [dateFormatter dateFromString:@"2016-12-08T19:42:00Z"];
+    user.lastupdateat = originalDate;
+    NSString *stmt = [MTLFMDBAdapter insertStatementForModel:user];
+    NSArray *params = [MTLFMDBAdapter columnValues:user];
+    [db executeUpdate:stmt withArgumentsInArray:params];
+    
+    NSError *error = nil;
+    FMResultSet *resultSet = [db executeQuery:@"select * from user"];
+    if ([resultSet next]) {
+      user = [MTLFMDBAdapter modelOfClass:MTLFMDBMockUser.class fromFMResultSet:resultSet error:&error];
+    }
+    expect(user.lastupdateat).to.equal(originalDate);
   });
 
 });
