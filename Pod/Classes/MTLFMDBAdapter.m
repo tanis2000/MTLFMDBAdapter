@@ -257,6 +257,92 @@ static NSString * const MTLFMDBAdapterThrownExceptionErrorKey = @"MTLFMDBAdapter
 	}
 }
 
++ (NSValueTransformer *)transformerForModelPropertiesOfClass:(Class)modelClass {
+  NSParameterAssert(modelClass != nil);
+  
+  SEL selector = MTLSelectorWithKeyPattern(NSStringFromClass(modelClass), "FMDBTransformer");
+  if (![self respondsToSelector:selector]) return nil;
+  
+  IMP imp = [self methodForSelector:selector];
+  NSValueTransformer * (*function)(id, SEL) = (__typeof__(function))imp;
+  NSValueTransformer *result = function(self, selector);
+  
+  return result;
+}
+
++ (NSValueTransformer *)transformerForModelPropertiesOfObjCType:(const char *)objCType {
+  NSParameterAssert(objCType != NULL);
+  
+  if (strcmp(objCType, @encode(BOOL)) == 0) {
+    return [NSValueTransformer valueTransformerForName:MTLBooleanValueTransformerName];
+  }
+  
+  return nil;
+}
+
++ (NSDictionary *)valueTransformersForModelClass:(Class)modelClass {
+  NSParameterAssert(modelClass != nil);
+  NSParameterAssert([modelClass conformsToProtocol:@protocol(MTLFMDBSerializing)]);
+  
+  NSMutableDictionary *result = [NSMutableDictionary dictionary];
+  
+  for (NSString *key in [modelClass propertyKeys]) {
+    SEL selector = MTLSelectorWithKeyPattern(key, "FMDBTransformer");
+    if ([modelClass respondsToSelector:selector]) {
+      IMP imp = [modelClass methodForSelector:selector];
+      NSValueTransformer * (*function)(id, SEL) = (__typeof__(function))imp;
+      NSValueTransformer *transformer = function(modelClass, selector);
+      
+      if (transformer != nil) result[key] = transformer;
+      
+      continue;
+    }
+    
+    if ([modelClass respondsToSelector:@selector(JSONTransformerForKey:)]) {
+      NSValueTransformer *transformer = [modelClass FMDBTransformerForKey:key];
+      
+      if (transformer != nil) {
+        result[key] = transformer;
+        continue;
+      }
+    }
+    
+    objc_property_t property = class_getProperty(modelClass, key.UTF8String);
+    
+    if (property == NULL) continue;
+    
+    mtl_propertyAttributes *attributes = mtl_copyPropertyAttributes(property);
+    @onExit {
+      free(attributes);
+    };
+    
+    NSValueTransformer *transformer = nil;
+    
+    if (*(attributes->type) == *(@encode(id))) {
+      Class propertyClass = attributes->objectClass;
+      
+      if (propertyClass != nil) {
+        transformer = [self transformerForModelPropertiesOfClass:propertyClass];
+      }
+      
+      
+      // For user-defined MTLModel, try parse it with dictionaryTransformer.
+      /*if (nil == transformer && [propertyClass conformsToProtocol:@protocol(MTLFMDBSerializing)]) {
+        transformer = [self dictionaryTransformerWithModelClass:propertyClass];
+      }*/
+      
+      if (transformer == nil) transformer = [NSValueTransformer mtl_validatingTransformerForClass:propertyClass ?: NSObject.class];
+    } else {
+      transformer = [self transformerForModelPropertiesOfObjCType:attributes->type] ?: [NSValueTransformer mtl_validatingTransformerForClass:NSValue.class];
+    }
+    
+    if (transformer != nil) result[key] = transformer;
+  }
+  
+  return result;
+}
+
+
 + (NSString *)propertyKeyForModel:(MTLModel<MTLFMDBSerializing> *)model column:(NSString *)column
 {
     NSDictionary *columns = [model.class FMDBColumnsByPropertyKey];
@@ -302,6 +388,18 @@ static NSString * const MTLFMDBAdapterThrownExceptionErrorKey = @"MTLFMDBAdapter
                 NSLog(@"Warning: value for key %@ is nil", propertyKey);
                 v = [NSNull null];
             }
+          // TODO: apply transformation
+          NSDictionary *transformers = [self valueTransformersForModelClass:model.class];
+          NSValueTransformer *transformer = [transformers objectForKey:propertyKey]; //[self FMDBTransformerForKey:propertyKey];
+          if (transformer != nil) {
+            if ([transformer.class allowsReverseTransformation]) {
+              // Map NSNull -> nil for the transformer, and then back for the
+              // dictionaryValue we're going to insert into.
+              if (![v isEqual:NSNull.null]) {
+                v = [transformer reverseTransformedValue:v];
+              }
+            }
+          }
             [values addObject:v];
         }
     }
