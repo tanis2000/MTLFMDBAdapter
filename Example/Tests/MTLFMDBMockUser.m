@@ -38,10 +38,10 @@
 
 + (NSValueTransformer *)lastupdateatFMDBTransformer {
   return [MTLValueTransformer transformerUsingForwardBlock:^id(NSString *dateString, BOOL *success, NSError *__autoreleasing *error) {
-    NSTimeInterval interval = [dateString longLongValue];
-    return [NSDate dateWithTimeIntervalSince1970: interval];
-    // We are storing dates as Unix epoch, otherwise you'd use the following commented statement
-    //return [self.dateFormatter dateFromString:dateString];
+    // If we were storing dates as Unix epoch, we'd use the following commented statements
+    //NSTimeInterval interval = [dateString longLongValue];
+    //return [NSDate dateWithTimeIntervalSince1970: interval];
+    return [self.dateFormatter dateFromString:dateString];
   } reverseBlock:^id(NSDate *date, BOOL *success, NSError *__autoreleasing *error) {
     return [self.dateFormatter stringFromDate:date];
   }];
